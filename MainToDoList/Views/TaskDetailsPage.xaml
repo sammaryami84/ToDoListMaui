@@ -1,0 +1,136 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MainToDoList"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MainToDoList.Views.TaskDetailPage"
+             Title="Task Details"
+             BackgroundColor="#73C2FB"
+             Shell.FlyoutBehavior="Disabled">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StrikeConverter x:Key="StrikeConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="0">
+
+        <!-- 🔼 فلش برگشت بالای صفحه -->
+        <Label Grid.Row="0"
+               Text="⤵"
+               FontSize="48"
+               TextColor="#FF894F"
+               HorizontalOptions="Center"
+               VerticalOptions="Start"
+               Margin="0,10,0,10">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnImageTapped" />
+            </Label.GestureRecognizers>
+        </Label>
+
+        <!-- بخش اسکرول‌پذیر محتوا -->
+        <ScrollView Grid.Row="1" Padding="20,0">
+            <VerticalStackLayout Spacing="15">
+
+                <!-- عنوان تسک -->
+                <HorizontalStackLayout>
+                    <Label Text="Task name : " TextColor="Black" FontSize="24" FontAttributes="Bold"/>
+                    <Label Text="{Binding Name}" FontSize="24" FontAttributes="Bold" TextColor="Black" />
+                </HorizontalStackLayout>
+
+                <!-- زمان‌بندی -->
+                <Label Text="{Binding ScheduledAt, StringFormat='Reminder: {0:yyyy/MM/dd - HH:mm}'}"
+                       FontSize="16"
+                       TextColor="Gray" />
+
+                <!-- لیبل ساب‌تسک‌ها -->
+                <Label Text="Subtasks:" FontSize="18" FontAttributes="Bold" Margin="0,10,0,0" TextColor="Black"/>
+
+                <!-- لیست ساب‌تسک‌ها -->
+                <CollectionView ItemsSource="{Binding SubTasks}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout Spacing="10">
+                                <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}" Color="Black" />
+                                <Label Text="{Binding Name}" FontSize="16" TextColor="Black" FontAttributes="Bold"
+                                       TextDecorations="{Binding IsCompleted, Converter={StaticResource StrikeConverter}}" />
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- ✅ نوار گزینه‌ها در پایین صفحه -->
+        <Grid Grid.Row="2"
+              BackgroundColor="#5BB0E6"
+              Padding="20,10"
+              HeightRequest="70"
+              HorizontalOptions="Fill"
+              VerticalOptions="End">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- حذف -->
+            <Label Grid.Column="0"
+                   Text="🗑"
+                   FontSize="20"
+                   TextColor="Black"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnDeleteClicked" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <!-- خط اول -->
+            <BoxView Grid.Column="1"
+                     WidthRequest="1"
+                     BackgroundColor="White"
+                     VerticalOptions="Fill"
+                     Margin="10,0" />
+
+            <!-- ویرایش -->
+            <Label Grid.Column="2"
+                   Text="✏"
+                   FontSize="20"
+                   Rotation="125"
+                   TextColor="Crimson"
+                   Margin="0,0,0,-10"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEditTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <!-- خط دوم -->
+            <BoxView Grid.Column="3"
+                     WidthRequest="1"
+                     BackgroundColor="White"
+                     VerticalOptions="Fill"
+                     Margin="10,0" />
+
+            <!-- اشتراک‌گذاری -->
+            <Label Grid.Column="4"
+                    Text="🗨"
+                     FontSize="20"
+                    TextColor="Black"
+                        FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnShareTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+    </Grid>
+</ContentPage>

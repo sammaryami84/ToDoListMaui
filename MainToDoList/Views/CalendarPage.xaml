@@ -1,0 +1,123 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:calendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
+             xmlns:local="clr-namespace:MainToDoList.ViewModels"
+             x:Class="MainToDoList.Views.CalendarPage"
+             BackgroundColor="#73C2FB"
+             NavigationPage.HasBackButton="False"
+             Shell.FlyoutBehavior="Disabled">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="20">
+
+            <!-- 🔙 فلش برگشت -->
+            <Label Text="←"
+                   FontSize="35"
+                   FontAttributes="Bold"
+                   TextColor="#FF894F"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Start">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBackTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <!-- عنوان ماه فعلی -->
+            <Label Text="{Binding MonthTitle}" 
+                   FontSize="22" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" 
+                   TextColor="#FF894F"/>
+
+            <!-- روزهای دارای تسک در ماه -->
+            <StackLayout IsVisible="{Binding HasTasksInMonth}">
+                <Label Text="Days with tasks:" FontAttributes="Bold" FontSize="18" HorizontalOptions="Center" TextColor="#FF894F"/>
+                <Label Text="{Binding TaskDaysInMonthString}" FontSize="16" TextColor="#FF894F" HorizontalOptions="Center" />
+            </StackLayout>
+
+            <!-- پیام عدم وجود تسک در ماه -->
+            <StackLayout IsVisible="{Binding HasTasksInMonth, Converter={StaticResource InverseBoolConverter}}">
+                <Label Text="{Binding NoTaskMessage}" FontSize="16" TextColor="#FF894F" HorizontalOptions="Center" />
+                <Image Source="notask.png" HeightRequest="200" WidthRequest="200" HorizontalOptions="Center" />
+            </StackLayout>
+
+            <!-- تقویم -->
+            <calendar:SfCalendar x:Name="calendar"
+                                 HeightRequest="300"
+                                 View="Month"
+                                 BackgroundColor="#73C2FB"
+                                 AllowViewNavigation="False"
+                                 EnablePastDates="True"
+                                 SelectionMode="Single"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="FillAndExpand" />
+
+            <!-- تسک‌های روز انتخاب‌شده -->
+            <StackLayout>
+                <Label Text="Tasks for selected day:" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#FF894F"/>
+
+                <CollectionView ItemsSource="{Binding TasksForSelectedDay}"
+                                IsVisible="{Binding HasTasksForDay}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="10"
+                                   BackgroundColor="CadetBlue"
+                                   CornerRadius="10"
+                                   Margin="5"
+                                   HorizontalOptions="Fill">
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      RowDefinitions="Auto,Auto"
+                                      HorizontalOptions="Fill">
+
+                                    <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}"
+                                              CheckedChanged="OnTaskCheckedChanged"
+                                              VerticalOptions="Center"
+                                              Color="#FF894F"/>
+
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           TextColor="Black"
+                                           TextDecorations="{Binding IsCompleted, Converter={StaticResource StrikeConverter}}"/>
+
+                                    <Label Grid.Row="0" Grid.Column="2"
+                                           Text="{Binding CategoryIconText}"
+                                           FontSize="20"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Center"
+                                           TextColor="White"/>
+
+                                    <ScrollView Orientation="Horizontal"
+                                                Grid.Row="1"
+                                                Grid.ColumnSpan="3"
+                                                Margin="0,10,0,0">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="📅" FontSize="14"/>
+                                            <Label Text="{Binding TaskDate, StringFormat='{0:yyyy/MM/dd}'}" FontSize="14" TextColor="Black"/>
+                                            <Label Text="⏰" FontSize="14"/>
+                                            <Label Text="{Binding TaskTime, StringFormat='{0:hh\\:mm}'}" FontSize="14" TextColor="Black"/>
+                                            <Label Text="🧩" FontSize="14"/>
+                                            <Label Text="{Binding SubTasks.Count, StringFormat='Subtasks: {0}'}" FontSize="14" TextColor="Black"/>
+                                        </HorizontalStackLayout>
+                                    </ScrollView>
+                                </Grid>
+
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCalendarTaskTapped"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- پیام عدم وجود تسک در روز انتخاب‌شده -->
+                <StackLayout IsVisible="{Binding HasTasksForDay, Converter={StaticResource InverseBoolConverter}}">
+                    <Label Text="{Binding NoTasksForDayMessage}" FontSize="16" TextColor="#FF894F" HorizontalOptions="Center" />
+                </StackLayout>
+            </StackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

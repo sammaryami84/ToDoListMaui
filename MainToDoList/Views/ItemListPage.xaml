@@ -1,0 +1,37 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:MainToDoList.Views"
+             x:Class="MainToDoList.Views.ItemListPage"
+             Title="Task list"
+             BackgroundColor="#73C2FB"
+             NavigationPage.HasBackButton="False">
+
+    <VerticalStackLayout>
+
+        <!-- نوار بالا با دکمه همبرگر دایره‌ای -->
+        <Grid Padding="10" ColumnDefinitions="Auto,*" VerticalOptions="Start">
+            <Frame Grid.Column="0"
+                   WidthRequest="40"
+                   HeightRequest="40"
+                   CornerRadius="20"
+                   BackgroundColor="#05445E"
+                   IsClippedToBounds="True"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   Padding="5">
+                <ImageButton Source="hamburger.png"
+                             BackgroundColor="Transparent"
+                             Clicked="OnHamburgerClicked"
+                             Aspect="AspectFit"
+                             WidthRequest="30"
+                             HeightRequest="30" />
+            </Frame>
+
+
+        </Grid>
+
+        <!-- لیست تسک‌ها -->
+        <views:ItemListView x:Name="itemListView" />
+
+    </VerticalStackLayout>
+</ContentPage>

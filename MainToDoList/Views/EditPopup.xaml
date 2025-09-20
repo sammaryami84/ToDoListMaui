@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    x:Class="MainToDoList.Views.EditPopup"
+    BackgroundColor="#73C2FB"
+    WidthRequest="350"
+    HeightRequest="500"
+    x:Name="RootPopup">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="PopupContent"
+                             Padding="20"
+                             Spacing="12"
+                             Opacity="0"
+                             Scale="0.8">
+
+            <!-- دسته‌بندی -->
+            <Picker x:Name="CategoryPicker"
+                    Title="Select Category"
+                    TitleColor="Gray"
+                    TextColor="Gray"
+                    ItemsSource="{Binding Categories}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding SelectedCategoryModel, Mode=TwoWay}" />
+
+            <!-- نام تسک -->
+            <Entry x:Name="TaskEntry"
+                   Text="{Binding Name, Mode=TwoWay}"
+                   Placeholder="Enter the task : "
+                   PlaceholderColor="Gray"
+                   TextColor="Black"
+                   FontAttributes="Bold" />
+
+            <!-- تاریخ -->
+            <DatePicker x:Name="TaskDatePicker"
+                        Date="{Binding TaskDate, Mode=TwoWay}"
+                        TextColor="Gray"
+                        FontAttributes="Bold"
+                        MinimumDate="{x:Static sys:DateTime.Today}" />
+
+            <!-- زمان -->
+            <TimePicker x:Name="TaskTimePicker"
+                        Time="{Binding TaskTime, Mode=TwoWay}"
+                        TextColor="Gray"
+                        FontAttributes="Bold" />
+
+            <!-- یادآور -->
+            <HorizontalStackLayout Spacing="8">
+                <Label Text="Status"
+                       VerticalOptions="Center"
+                       TextColor="Gray"
+                       FontSize="18" />
+                <CheckBox x:Name="ReminderCheckBox"
+                          IsChecked="{Binding IsCompleted, Mode=TwoWay}"
+                          Color="#FF894F" />
+            </HorizontalStackLayout>
+
+            <!-- دکمه ثبت -->
+            <Button x:Name="SaveButton"
+                    Text="✔ Save"
+                    Clicked="OnSaveClicked"
+                    BackgroundColor="GreenYellow"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="45"
+                    HorizontalOptions="Fill" />
+
+            <!-- دکمه لغو -->
+            <Button x:Name="CancelButton"
+                    Text="Cancel"
+                    Clicked="OnCancelClicked"
+                    BackgroundColor="Crimson"
+                    TextColor="White"
+                    CornerRadius="12"
+                    HeightRequest="45"
+                    HorizontalOptions="Fill" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</toolkit:Popup>

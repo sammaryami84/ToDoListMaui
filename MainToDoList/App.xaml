@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MainToDoList"
+             x:Class="MainToDoList.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <local:StrikeConverter x:Key="StrikeConverter" />
+            <local:InverseBoolConverter x:Key="InverseBoolConverter" />
+
+
+            <!-- سبک سراسری برای حذف دکمه برگشت -->
+            <Style TargetType="NavigationPage">
+                <Setter Property="HasBackButton" Value="False" />
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

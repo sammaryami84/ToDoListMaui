@@ -1,0 +1,147 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             x:Class="MainToDoList.Views.AddTaskPage"
+             Title="Add Task"
+             BackgroundColor="#73C2FB"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasBackButton="False">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 🔙 فلش برگشت -->
+        <Label Grid.Row="0"
+               Text="←"
+               FontAttributes="Bold"
+               FontSize="35"
+               TextColor="#FF894F"
+               HorizontalOptions="Start"
+               VerticalOptions="Start"
+               Margin="0,0,0,10">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnBackTapped" />
+            </Label.GestureRecognizers>
+        </Label>
+
+        <!-- فرم افزودن تسک -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="10">
+
+
+                <Picker x:Name="CategoryPicker"
+                        Title="Select Category"
+                        TitleColor="Gray"
+                        TextColor="Gray"
+                        ItemsSource="{Binding Categories}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"/>
+
+                <Entry x:Name="TaskEntry"
+                       Placeholder="Enter the task : "
+                       PlaceholderColor="Gray"
+                       TextColor="Black"
+                       FontAttributes="Bold"/>
+
+                <DatePicker x:Name="TaskDatePicker"
+                            TextColor="Gray"
+                            FontAttributes="Bold"
+                            MinimumDate="{x:Static sys:DateTime.Today}" />
+
+                <TimePicker x:Name="TaskTimePicker"
+                            TextColor="Gray"
+                            FontAttributes="Bold"/>
+
+                <HorizontalStackLayout Spacing="8">
+                    <Label Text="Reminder" 
+                           VerticalOptions="Center"
+                           TextColor="Gray"
+                           FontSize="18"/>
+                    <CheckBox x:Name="ReminderCheckBox"
+                              Color="#FF894F"/>
+                </HorizontalStackLayout>
+
+                <!-- ساب‌تسک‌ها -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" VerticalOptions="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                    
+                        <Button Text="➕ Add Sub-task"
+                                Grid.Column="0"
+                                Margin="0,10,0,10"
+                                HorizontalOptions="Start"
+                                Clicked="OnAddSubTaskClicked"
+                                BackgroundColor="#73C2FB"
+                                TextColor="White"/>
+                    </Grid>
+
+                    <CollectionView x:Name="SubTasksView"
+                                    Grid.Row="1"
+                                    ItemsSource="{Binding SubTasks}"
+                                    SelectionMode="None"
+                                    VerticalOptions="FillAndExpand">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="8"
+                                       CornerRadius="12"
+                                       HasShadow="False"
+                                       BorderColor="#73C2FB"
+                                       BackgroundColor="#FF894F">
+                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                                        <CheckBox IsChecked="{Binding IsCompleted}"
+                                                  Color="CadetBlue"
+                                                  VerticalOptions="Center"/>
+                                        <Entry Text="{Binding Name, Mode=TwoWay}"
+                                               Placeholder="Sub-task title"
+                                               PlaceholderColor="Black"
+                                               TextColor="Black"
+                                               HorizontalOptions="FillAndExpand"
+                                               ClearButtonVisibility="WhileEditing"/>
+                                        <Button Text="🗑"
+                                                BackgroundColor="Transparent"
+                                                TextColor="Crimson"
+                                                Clicked="OnRemoveSubTaskClicked"
+                                                CommandParameter="{Binding .}"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- دکمه ذخیره -->
+        <VerticalStackLayout Grid.Row="2" Spacing="10">
+            <Label Grid.Row="2"
+       Text="✔"
+       FontSize="40"
+       TextColor="GreenYellow"
+       HorizontalOptions="Center"
+       VerticalOptions="End"
+       Margin="0,10,0,20">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSaveTaskClicked" />
+                </Label.GestureRecognizers>
+            </Label>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

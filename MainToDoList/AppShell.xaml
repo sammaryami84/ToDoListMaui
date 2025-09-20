@@ -1,0 +1,49 @@
+<Shell
+    x:Class="MainToDoList.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:MainToDoList.Views"
+    Shell.FlyoutBackgroundColor="LightBlue"
+    Shell.FlyoutWidth="200"
+    Shell.NavBarIsVisible="False">
+
+    <!-- قالب آیتم‌های منوی کشویی -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="10" ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                <Frame Grid.Column="0"
+                       WidthRequest="32"
+                       HeightRequest="32"
+                       CornerRadius="16"
+                       Padding="0"
+                       IsClippedToBounds="True"
+                       BackgroundColor="Transparent"
+                       VerticalOptions="Center"
+                       Margin="0,0,10,0">
+                    <Image Source="{Binding Icon}"
+                           Aspect="AspectFill"
+                           WidthRequest="32"
+                           HeightRequest="32" />
+                </Frame>
+
+                <Label Grid.Column="1"
+                       Text="{Binding Title}"
+                       VerticalOptions="Center"
+                       HorizontalTextAlignment="Start"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       TextColor="#05445E" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <FlyoutItem Title="Home" Icon="home.jpeg">
+        <ShellContent Route="home" ContentTemplate="{DataTemplate views:ItemListPage}" />
+    </FlyoutItem>
+
+    <!-- آیتم منوی کشویی: Calendar -->
+    <FlyoutItem Title="Calendar" Icon="calender1.jpeg">
+        <ShellContent ContentTemplate="{DataTemplate views:CalendarPage}" />
+    </FlyoutItem>
+
+</Shell>
